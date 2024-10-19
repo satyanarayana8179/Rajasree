@@ -24,8 +24,8 @@ public class EmployeeService {
         return employeeRepo.findAll();
     }
 
-    public Optional<Employee> getEmployeeByReferenceId(int referenceId) {
-        return employeeRepo.findById(referenceId);
+    public Employee getEmployeeByReferenceId(String employeeReferenceId) {
+        return employeeRepo.findByEmployeeReferenceId(employeeReferenceId);
     }
 
 }

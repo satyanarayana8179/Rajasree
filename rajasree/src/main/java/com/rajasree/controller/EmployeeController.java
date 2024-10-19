@@ -26,10 +26,13 @@ public class EmployeeController {
     }
 
     @GetMapping("/{referenceId}")
-    public ResponseEntity<Employee> getEmployeeByReferenceId(@PathVariable int referenceId) {
-        Optional<Employee> employee = employeeService.getEmployeeByReferenceId(referenceId);
-        return employee.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+    public ResponseEntity<Employee> getEmployeeByReferenceId(@PathVariable("referenceId") String referenceId) {
+        Employee employee = employeeService.getEmployeeByReferenceId(referenceId);
+        if (employee != null) {
+            return ResponseEntity.ok(employee);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

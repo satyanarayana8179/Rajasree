@@ -31,6 +31,13 @@ public class Employee {
     @Column(name = "department")
     private String department;
 
-    // Add more fields as necessary
+    @Column(name = "employee_reference_id", unique = true, nullable = false)
+    private String employeeReferenceId;
+
+    @PrePersist
+    private void generateEmployeeReferenceId() {
+        // Generate a unique reference ID (e.g., UUID or any custom logic)
+        this.employeeReferenceId = "EMP" + empId; // Example logic: prefix with "EMP" and use empId = 1 is EMP1
+    }
 
 }

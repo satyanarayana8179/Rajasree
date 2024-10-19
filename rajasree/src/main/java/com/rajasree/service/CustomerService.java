@@ -1,16 +1,12 @@
 package com.rajasree.service;
 
 import com.rajasree.entities.Customer;
-import com.rajasree.entities.CustomerEmployeeReference;
-import com.rajasree.entities.Employee;
 import com.rajasree.repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 
 
 @Service
