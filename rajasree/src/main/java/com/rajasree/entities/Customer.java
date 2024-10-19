@@ -86,17 +86,9 @@ public class Customer {
     @Column(name = "image_data", columnDefinition = "LONGBLOB")
     private byte[] imageData;
 
-    @Column(name = "image_name")
-    private String imageName;
-
-    @Column(name = "image_size")
-    private long imageSize;
-
-    @Column(name = "image_details")
-    private String imageDetails;
-
-    @Column(name = "employee_id")
-    private int empId;
+    @ManyToOne
+    @JoinColumn(name = "employee_id", referencedColumnName = "empId")
+    private Employee employee;
 
 
 }

@@ -17,12 +17,18 @@ public class OtpService {
     @Value("${twilio.auth.token}")
     private String authToken;
 
-    @Value("${twilio.auth.phone}")
+    @Value("${twilio.phone.number}")
     private String twilioPhoneNumber;
 
     public String generateOTP() {
         Random rand = new Random();
+        System.out.println(rand);
         return String.format("%06d", rand.nextInt(1000000));
+    }
+
+    public void logOTP(String mobileNumber, String otp) {
+        // Log OTP to the console instead of sending it, (using this for testing purpose only)
+        System.out.println("Sending OTP " + otp + " to mobile number: " + mobileNumber);
     }
 
     public void sendOTP(String mobileNumber, String otp) {

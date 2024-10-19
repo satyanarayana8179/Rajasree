@@ -15,10 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/register")
+@RequestMapping("/v1")
 @CrossOrigin(origins = "http://localhost:3000")
 public class CustomerController {
 
@@ -35,7 +37,7 @@ public class CustomerController {
     private final Map<String, LocalDateTime> otpTimestamp = new HashMap<>();
 
 
-    @PostMapping("/user")
+    @PostMapping("/register")
     public ResponseEntity<String> registerCustomer(
             @RequestPart("customer") Customer customer,
             @RequestPart("image") MultipartFile image) {
@@ -58,42 +60,49 @@ public class CustomerController {
             return "Customer not found";
         }
 
+        //String otp = otpService.generateOTP();
+        //otpService.sendOTP(mobileNumber, otp);
+//
+        //// Store OTP and timestamp temporarily in memory
+        //otpStorage.put(mobileNumber, otp);
+        //otpTimestamp.put(mobileNumber, LocalDateTime.now());
+        //System.out.println(otp);
+
         String otp = otpService.generateOTP();
-        otpService.sendOTP(mobileNumber, otp);
+        otpService.logOTP(mobileNumber, otp); // Log OTP instead of sending it
 
         // Store OTP and timestamp temporarily in memory
         otpStorage.put(mobileNumber, otp);
         otpTimestamp.put(mobileNumber, LocalDateTime.now());
+        System.out.println(otp);
 
         return "OTP sent to " + mobileNumber;
     }
 
     @PostMapping("/verify")
-    public String verify(@RequestParam String mobileNumber, @RequestParam String otp) {
+    public ResponseEntity<?> verify(@RequestParam String mobileNumber, @RequestParam String otp) {
         String storedOtp = otpStorage.get(mobileNumber);
         LocalDateTime sentTime = otpTimestamp.get(mobileNumber);
 
         if (storedOtp == null) {
-            return "OTP not sent or expired!";
+            return ResponseEntity.status(400).body("OTP not sent or expired!");
         }
 
-        // Verify OTP and check expiry, otp is not storing otp in database
+        // Verify OTP and check expiry
         if (otp.equals(storedOtp)) {
             if (sentTime.plusMinutes(5).isAfter(LocalDateTime.now())) {
-
                 otpStorage.remove(mobileNumber);
                 otpTimestamp.remove(mobileNumber);
-                return "Login successful!";
+
+                // Fetch the customer object and return it
+                Customer customer = customerRepo.findByMobileNumber(mobileNumber);
+                return ResponseEntity.ok(customer); // Return the customer object
             } else {
-                return "OTP has expired!";
+                return ResponseEntity.status(400).body("OTP has expired!");
             }
         } else {
-            return "Invalid OTP!";
+            return ResponseEntity.status(400).body("Invalid OTP!");
         }
     }
-
-
-
-
 
 }
