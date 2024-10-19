@@ -26,11 +26,13 @@ public class OtpService {
         return String.format("%06d", rand.nextInt(1000000));
     }
 
+    // Log OTP to the console instead of sending it, (using this for testing purpose only)
     public void logOTP(String mobileNumber, String otp) {
-        // Log OTP to the console instead of sending it, (using this for testing purpose only)
         System.out.println("Sending OTP " + otp + " to mobile number: " + mobileNumber);
     }
 
+
+    //This method will be used for sending otps after deploying with third party apis
     public void sendOTP(String mobileNumber, String otp) {
         Twilio.init(accountSid, authToken);
 

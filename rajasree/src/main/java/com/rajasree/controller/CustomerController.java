@@ -96,7 +96,7 @@ public class CustomerController {
 
                 // Fetch the customer object and return it
                 Customer customer = customerRepo.findByMobileNumber(mobileNumber);
-                return ResponseEntity.ok(customer); // Return the customer object
+                return ResponseEntity.ok(customer);
             } else {
                 return ResponseEntity.status(400).body("OTP has expired!");
             }

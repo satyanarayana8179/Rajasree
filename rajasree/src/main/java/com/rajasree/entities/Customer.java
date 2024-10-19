@@ -86,9 +86,8 @@ public class Customer {
     @Column(name = "image_data", columnDefinition = "LONGBLOB")
     private byte[] imageData;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "empId")
-    private Employee employee;
+    @Column(name = "employee_reference_id")
+    private int employeeReferenceId;
 
 
 }

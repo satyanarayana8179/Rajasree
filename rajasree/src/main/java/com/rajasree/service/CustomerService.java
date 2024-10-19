@@ -1,6 +1,7 @@
 package com.rajasree.service;
 
 import com.rajasree.entities.Customer;
+import com.rajasree.entities.CustomerEmployeeReference;
 import com.rajasree.entities.Employee;
 import com.rajasree.repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,6 @@ public class CustomerService {
     @Autowired
     private EmployeeService employeeService;
 
-
-
     public Customer registerCustomer(Customer customer, MultipartFile image) throws IOException {
         if (customerRepo.existsByAadharNumber(customer.getAadharNumber())) {
             throw new IllegalArgumentException("Aadhar number already exists");
@@ -34,14 +33,7 @@ public class CustomerService {
             throw new IllegalArgumentException("Email already exists");
         }
 
-        if (customer.getEmployee() != null && customer.getEmployee().getEmpId() > 0) {
-            Employee employee = employeeService.findEmployeeById(customer.getEmployee().getEmpId());
-            if (employee != null) {
-                customer.setEmployee(employee); // Set the employee in the customer
-            } else {
-                throw new IllegalArgumentException("Employee not found");
-            }
-        }
+
 
         if (image != null && !image.isEmpty()) {
             customer.setImageData(image.getBytes());

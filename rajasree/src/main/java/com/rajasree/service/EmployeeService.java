@@ -23,4 +23,9 @@ public class EmployeeService {
     public List<Employee> findAllEmployees() {
         return employeeRepo.findAll();
     }
+
+    public Optional<Employee> getEmployeeByReferenceId(int referenceId) {
+        return employeeRepo.findById(referenceId);
+    }
+
 }
